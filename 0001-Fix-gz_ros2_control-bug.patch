@@ -1,0 +1,26 @@
+From 22b712cbafe68b2292f5209e82580c465479603e Mon Sep 17 00:00:00 2001
+From: Hao Lu <Hao.Lu@anu.edu.au>
+Date: Tue, 4 Mar 2025 04:40:46 +1100
+Subject: [PATCH] Fix gz_ros2_control bug
+
+Gazebo adds suffix to mimic joints which confuses MoveIt2 and causes errors.
+---
+ ign_ros2_control/src/ign_system.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ign_ros2_control/src/ign_system.cpp b/ign_ros2_control/src/ign_system.cpp
+index 3c05751..3ba1b92 100644
+--- a/ign_ros2_control/src/ign_system.cpp
++++ b/ign_ros2_control/src/ign_system.cpp
+@@ -294,7 +294,7 @@ bool IgnitionSystem::initSim(
+                   << mimicked_joint << "' with multiplier: "
+                   << mimic_joint.multiplier);
+       this->dataPtr->mimic_joints_.push_back(mimic_joint);
+-      suffix = "_mimic";
++      suffix = "";
+     }
+ 
+     RCLCPP_INFO_STREAM(this->nh_->get_logger(), "\tState:");
+-- 
+2.34.1
+

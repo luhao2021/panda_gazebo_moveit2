@@ -1,0 +1,58 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 150  # Hz
+    
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    panda_traj_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+      #type: effort_controllers/JointGroupEffortController
+    
+    # only for fake control
+    panda_gripper_traj_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+      #type: position_controllers/GripperActionController
+      #type: effort_controllers/JointGroupEffortController
+      #type: effort_controllers/GripperActionController
+
+panda_traj_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - panda_joint1
+      - panda_joint2
+      - panda_joint3
+      - panda_joint4
+      - panda_joint5
+      - panda_joint6
+      - panda_joint7
+    constraints:
+      goal_time: 0.5
+      stopped_velocity_tolerance: 0.0
+      panda_joint1: {trajectory: 1.0, goal: 0.01}
+      panda_joint2: {trajectory: 1.0, goal: 0.01}
+      panda_joint3: {trajectory: 1.0, goal: 0.01}
+      panda_joint4: {trajectory: 1.0, goal: 0.01}
+      panda_joint5: {trajectory: 1.0, goal: 0.01}
+      panda_joint6: {trajectory: 1.0, goal: 0.01}
+    interface_name: position
+    state_publish_rate: 25.0
+    action_monitor_rate: 10.0
+
+# only for fake control
+panda_gripper_traj_controller:
+  ros__parameters:
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+    joints:
+      - panda_finger_joint1
+    interface_name: position

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="ros_gz_sim_plugin" params="controller_yaml_path">
+    <gazebo>
+      <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+        <!--robot_sim_type>gazebo_ros2_control/GazeboSystem</robot_sim_type-->
+        <parameters>${controller_yaml_path}</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+</robot>
+

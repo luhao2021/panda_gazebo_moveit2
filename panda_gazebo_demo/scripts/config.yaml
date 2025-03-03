@@ -1,0 +1,17 @@
+availability_check_service:
+  command: "ign service"
+  parameters: "-l"
+
+initial_scene_layout_service:
+  command: "ign service"
+  service_name: "/world/panda_world/scene/info"
+  parameters: "--reqtype ignition.msgs.Empty --reptype ignition.msgs.Scene --timeout 300 -r \"\""
+
+pose_update_topic:
+  command: "ign topic"
+  topic_name: "/world/panda_world/pose/info"
+  parameters: "-e -n 1"
+
+objects_of_interest:
+  - Table
+  - Vans_Cereal_Honey_Nut_Crunch_11_oz_box

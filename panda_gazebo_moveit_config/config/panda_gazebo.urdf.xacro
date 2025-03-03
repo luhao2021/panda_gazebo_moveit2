@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+    <xacro:arg name="ros2_control_hardware_type" default="ros_gz_sim" />
+    <xacro:arg name="controller_yaml_path" default="$(find moveit_resources_panda_gazebo_moveit_config)/config/panda_gazebo_controllers.yaml" />
+
+    <!-- Import panda urdf file -->
+    <xacro:include filename="$(find moveit_resources_panda_gazebo_description)/urdf/panda_gazebo.urdf" />
+
+    <!-- Import panda ros2_control description -->
+    <xacro:include filename="panda_gazebo.ros2_control.xacro" />
+
+    <!-- Include the Gazebo plugin Xacro -->
+    <xacro:include filename="ros_gz_sim_plugin.xacro" />
+
+    <xacro:panda_gazebo_ros2_control name="GazeboSystem" initial_positions_file="$(arg initial_positions_file)" ros2_control_hardware_type="$(arg ros2_control_hardware_type)"/>
+
+    <!-- Call the macro with the YAML path -->
+    <xacro:ros_gz_sim_plugin controller_yaml_path="$(arg controller_yaml_path)" />
+
+
+</robot>
