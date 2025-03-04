@@ -50,7 +50,7 @@ rosdep install -r --from-paths . --ignore-src --rosdistro $ROS_DISTRO -y
 colcon build --merge-install --symlink-install --cmake-args "-DCMAKE_BUILD_TYPE=Release"
 ```
 
-### Run the demo
+### Run the basic demo
 
 Please follow below steps to run the demo
 
@@ -69,4 +69,27 @@ ros2 launch panda_gazebo_demo move_group_gazebo.launch.py
 source /opt/ros/humble/setup.bash
 cd scripts
 ./gazebo_updater.py --config config.yaml
+```
+
+### Run the motion planning api demo
+
+Please follow below steps to run the demo
+
+```bash
+# Terminal 1
+export GZ_SIM_SYSTEM_PLUGIN_PATH=$(CURRENT_WORKING_DIRECTORY)/install/lib
+export GZ_SIM_RESOURCE_PATH=$(CURRENT_WORKING_DIRECTORY)/install/share:$(CURRENT_WORKING_DIRECTORY)/install/share/panda_gazebo_demo/models
+source $(MOVEIT2_DIRECTORY)/install/setup.bash
+source install/local_setup.bash
+ros2 launch panda_gazebo_demo move_group_gazebo.launch.py
+
+# Terminal 2:
+source /opt/ros/humble/setup.bash
+cd scripts
+./gazebo_updater.py --config config.yaml
+
+# Terminal 3
+source $(MOVEIT2_DIRECTORY)/install/setup.bash
+source install/local_setup.bash
+ros2 launch panda_gazebo_motion_planning_api motion_planning_api_gazebo.launch.py
 ```
