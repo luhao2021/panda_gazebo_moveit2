@@ -109,6 +109,9 @@ int main(int argc, char** argv)
   moveit::core::RobotStatePtr robot_state(new moveit::core::RobotState(robot_model));
   const moveit::core::JointModelGroup* joint_model_group = robot_state->getJointModelGroup(PLANNING_GROUP);
 
+  const std::string PLANNING_GROUP2 = "panda_arm_hand";
+  moveit::planning_interface::MoveGroupInterface move_group_hand(motion_planning_api_tutorial_node, "hand");
+
   // Using the
   // :moveit_codedir:`RobotModel<moveit_core/robot_model/include/moveit/robot_model/robot_model.h>`,
   // we can construct a
@@ -184,6 +187,17 @@ int main(int argc, char** argv)
 
   /* We can also use visual_tools to wait for user input */
   visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start the demo");
+
+  // Open Gripper
+  std::vector<double> gripper_open_pose = {0.038, 0.038};
+  move_group_hand.setJointValueTarget(gripper_open_pose);
+  move_group_hand.setPlanningTime(30.0);
+  if(move_group_hand.move() == moveit::core::MoveItErrorCode::SUCCESS) {
+      RCLCPP_INFO(LOGGER, "Gripper opened successfully.");
+      //moveit::core::RobotStatePtr current_state = move_group_hand.getCurrentState(5);
+  } else {
+      RCLCPP_INFO(LOGGER, "Failed to open the gripper.");
+  }
 
   // Pose Goal
   // ^^^^^^^^^
@@ -371,8 +385,6 @@ int main(int argc, char** argv)
   visual_tools.trigger();
   display_publisher->publish(display_trajectory);
 
-  execute_trajectory(move_group, res, robot_model);
-
   /* Set the state in the planning scene to the final state of the last plan */
   robot_state->setJointGroupPositions(joint_model_group, response.trajectory.joint_trajectory.points.back().positions);
   planning_scene->setCurrentState(*robot_state.get());
@@ -381,6 +393,8 @@ int main(int argc, char** argv)
   visual_tools.publishAxisLabeled(pose.pose, "goal_3");
   visual_tools.publishText(text_pose, "Orientation Constrained Motion Plan (3)", rvt::WHITE, rvt::XLARGE);
   visual_tools.trigger();
+
+  execute_trajectory(move_group, res, robot_model);
 
   // END_TUTORIAL
   /* Wait for user input */
